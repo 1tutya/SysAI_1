@@ -250,6 +250,11 @@ class ExpertSystem:
 
     def query_missing_fact(self, var):
         """Запрос одного недостающего факта"""
+        # Не запрашиваем значения для переменных "проблема" и "решение"
+        if var in ['проблема', 'решение']:
+            self.skipped_vars.add(var)
+            return False
+
         if var not in self.working_memory and var not in self.skipped_vars:
             # Если для переменной есть известные варианты, предлагаем выбрать
             if var in self.variable_options:
@@ -414,11 +419,7 @@ def main():
         print("2. Показать правила")
         print("3. Добавить правило")
         print("4. Удалить правило")
-        print("5. Показать текущие факты")
-        print("6. Добавить факт")
-        print("7. Очистить факты")
-        print("8. Показать возможные значения переменных")
-        print("9. Выход")
+        print("5. Выход")
         
         choice = input("Выберите действие: ")
         
@@ -482,18 +483,6 @@ def main():
             es.delete_rule()
             
         elif choice == '5':
-            es.show_facts()
-            
-        elif choice == '6':
-            es.add_fact()
-            
-        elif choice == '7':
-            es.clear_facts()
-            
-        elif choice == '8':
-            es.show_variable_options()
-            
-        elif choice == '9':
             break
             
         else:
